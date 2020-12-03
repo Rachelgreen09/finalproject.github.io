@@ -2,57 +2,120 @@
   <head>
     <title>All The Faces We've Seen</title>
     <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   </head>
-
+ 
   <body>
-    <a-scene>
+    <a-scene inspector-plugin-recast>
       <a-assets>
-        <video id="ceiling" autoplay loop="true" src="assets/TopSectionFamousFaces.mp4"></video>
-        <video id="rightWall" autoplay loop="true" src="assets/rightSideFaceVideo.mp4"></video>
-        <video id="leftWall" autoplay loop="true" src="assets/leftSideFaceVideo.mp4"></video>
-        <video id="floor" autoplay loop="true" src="assets/dreamyfaces.mov"></video>
+        <video
+          id="ceiling"
+          autoplay
+          loop="true"
+          src="assets/TopSectionFamousFaces.mp4"
+        ></video>
+        <video
+          id="rightWall"
+          autoplay
+          loop="true"
+          src="assets/rightSideFaceVideo.mp4"
+        ></video>
+        <video
+          id="leftWall"
+          autoplay
+          loop="true"
+          src="assets/leftSideFaceVideo.mp4"
+        ></video>
+        <video
+          id="floor"
+          autoplay
+          loop="true"
+          src="assets/dreamyfaces.mov"
+        ></video>
         <video id="back" autoplay loop="true" src="assets/backwall.mp4"></video>
         <video id="webcam-video" playsinline></video>
       </a-assets>
       <a-entity position="0 0 0">
-
         <!-- back -->
-        <a-entity geometry="primitive: plane" position="0 0 0.5" rotation="0 180 0" height="1" width="1"
-          material="src: #back"></a-entity>
-
+        <a-entity
+          geometry="primitive: plane"
+          position="0 0 0.5"
+          rotation="0 180 0"
+          scale="1.78 1 1"
+          height="1"
+          width="1"
+          material="src: #rightWall"
+        ></a-entity>
+ 
         <!-- front -->
-        <a-entity geometry="primitive: plane" position="0 0 -0.5" rotation="0 0 0" height="1" width="1"
-          material="src: #webcam-video" scale="1.78 1 1"></a-entity>
-
+        <a-entity
+          geometry="primitive: plane"
+          position="0 0 -0.5"
+          rotation="0 0 0"
+          scale="1.78 1 1"
+          height="1"
+          width="1"
+          material="src: #webcam-video"
+          scale="1.78 1 1"
+        ></a-entity>
+ 
         <!-- left -->
-        <a-entity geometry="primitive: plane" position="-0.5 0 0" rotation="0 90 0" height="1" width="1"
-          material="src: #leftWall"></a-entity>
-
+        <a-entity
+          geometry="primitive: plane"
+          position="-0.88 0 0"
+          rotation="0 90 0"
+          height="1"
+          width="1"
+          material="src: #leftWall"
+        ></a-entity>
+ 
         <!-- right wall -->
-        <a-entity geometry="primitive: plane" position="0.5 0 0" rotation="0 -90 0" height="1" width="1"
-        material="src: #rightWall"></a-entity>
-
+        <a-entity
+          geometry="primitive: plane"
+          position="0.88 0 0"
+          rotation="0 -90 0"
+          height="1"
+          width="1"
+          material="src: #back"
+        ></a-entity>
+ 
         <!-- top -->
-        <a-entity geometry="primitive: plane" position="0 0.5 0" rotation="90 0 0" height="1" width="1"
-          material="src: #ceiling"></a-entity>
-
+        <a-entity
+          geometry="primitive: plane"
+          position="0 0.5 0"
+          rotation="90 0 0"
+          scale="1.78 1 1 "
+          height="1"
+          width="1"
+          material="src: #ceiling"
+        ></a-entity>
+ 
         <!-- bottom -->
-        <a-entity geometry="primitive: plane" position="0 -0.5 0" rotation="-90 0 0" height="1" width="1"
-          material="src: #floor"></a-entity>
+        <a-entity
+          geometry="primitive: plane"
+          position="0 -0.5 0"
+          rotation="-90 0 0"
+          scale="1.78 1 1 "
+          height="1"
+          width="1"
+          material="src: #floor"
+        ></a-entity>
       </a-entity>
-
+ 
       <a-entity camera look-controls wasd-controls position="0 0 0"></a-entity>
     </a-scene>
     <script>
       // You can also set which camera to use (front/back/etc)
-      navigator.mediaDevices.getUserMedia({ audio: false, video: true })
-        .then(stream => {
+      navigator.mediaDevices
+        .getUserMedia({ audio: false, video: true })
+        .then((stream) => {
           let vid = document.querySelector('#webcam-video')
           vid.srcObject = stream
           vid.onloadedmetadata = () => {
             vid.play()
           }
         })
-      </script>
+    </script>
   </body>
 </html>
+ 
