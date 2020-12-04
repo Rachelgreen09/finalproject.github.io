@@ -2,6 +2,7 @@
   <head>
     <title>All The Faces We've Seen</title>
     <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   </head>
  
@@ -35,7 +36,31 @@
         <video id="back" autoplay loop="true" src="assets/backwall.mp4"></video>
         <video id="webcam-video" playsinline></video>
       </a-assets>
-      <a-entity position="0 0 0">
+ 
+      <a-entity
+        look-controls
+        wasd-controls
+        movement-controls="constrainToNavMesh: true"
+        position="0 0 0"
+      >
+        <a-entity camera></a-entity>
+      </a-entity>
+w
+      <!-- <a-entitys
+        movement-controls="speed: 0.15; constrainToNavMesh: true"
+        position="0 0 6"
+        wasd-controls
+      >
+        <a-entity
+          camera
+          position="0 0 0"
+          look-controls="pointerLockEnabled: true"
+        >
+          <a-cursor></a-cursor>
+        </a-entity>
+      </a-entity> -->
+ 
+      <a-entity position="0 0 0" scale="15 15 15">
         <!-- back -->
         <a-entity
           geometry="primitive: plane"
@@ -100,9 +125,20 @@
           width="1"
           material="src: #floor"
         ></a-entity>
+ 
+        <!-- nav mesh -->
+        <a-box
+        position="0 0 0"
+        scale="1.70 0.01 0.9"
+        material="color: lightblue"
+        nav-mesh
+        visible='false'
+      >
       </a-entity>
  
-      <a-entity camera look-controls wasd-controls position="0 0 0"></a-entity>
+ 
+ 
+      </a-box>
     </a-scene>
     <script>
       // You can also set which camera to use (front/back/etc)
