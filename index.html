@@ -4,11 +4,14 @@
     <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://cdn.rawgit.com/brianchirls/Seriously.js/513d2b86/seriously.js"></script>
+    <script src="https://cdn.rawgit.com/brianchirls/Seriously.js/513d2b86/effects/seriously.hex.js"></script>
   </head>
  
   <body>
     <a-scene inspector-plugin-recast>
       <a-assets>
+        <canvas id='canvas-1'></canvas>
         <video
           id="ceiling"
           autoplay
@@ -35,6 +38,7 @@
         ></video>
         <video id="back" autoplay loop="true" src="assets/backwall.mp4"></video>
         <video id="webcam-video" playsinline></video>
+        <video id='effect-video' playsinline></video>
       </a-assets>
  
       <a-entity
@@ -45,20 +49,6 @@
       >
         <a-entity camera></a-entity>
       </a-entity>
-w
-      <!-- <a-entitys
-        movement-controls="speed: 0.15; constrainToNavMesh: true"
-        position="0 0 6"
-        wasd-controls
-      >
-        <a-entity
-          camera
-          position="0 0 0"
-          look-controls="pointerLockEnabled: true"
-        >
-          <a-cursor></a-cursor>
-        </a-entity>
-      </a-entity> -->
  
       <a-entity position="0 0 0" scale="15 15 15">
         <!-- back -->
@@ -69,18 +59,18 @@ w
           scale="1.78 1 1"
           height="1"
           width="1"
-          material="src: #rightWall"
+          material="src: #back"
         ></a-entity>
  
         <!-- front -->
         <a-entity
+          updater
           geometry="primitive: plane"
           position="0 0 -0.5"
           rotation="0 0 0"
           scale="1.78 1 1"
           height="1"
           width="1"
-          material="src: #webcam-video"
           scale="1.78 1 1"
         ></a-entity>
  
@@ -141,17 +131,54 @@ w
       </a-box>
     </a-scene>
     <script>
-      // You can also set which camera to use (front/back/etc)
+ 
+      var seriously = new Seriously();
+ 
+      AFRAME.registerComponent('updater', {
+        init: function() {
+          // we'll update this manually
+          this.texture = null
+          let canvas = document.getElementById("canvas-1");
+ 
+ 
+          // wait until the element is ready
+          this.el.addEventListener('loaded', e => {
+            // create the texture
+            this.texture = new THREE.CanvasTexture(canvas);
+ 
+            // get the references neccesary to swap the texture
+            let mesh = this.el.getObject3D('mesh')
+            mesh.material.map = this.texture
+            // if there was a map before, you should dispose it
+          })
+        },
+        tick: function() {
+          // if the texture is created - update it
+          if (this.texture) this.texture.needsUpdate = true
+        }
+      })
+ 
+ 
       navigator.mediaDevices
         .getUserMedia({ audio: false, video: true })
         .then((stream) => {
+ 
+ 
           let vid = document.querySelector('#webcam-video')
           vid.srcObject = stream
           vid.onloadedmetadata = () => {
             vid.play()
+ 
+            var target = seriously.target('#canvas-1');
+            const source = seriously.source('#webcam-video')
+            moblur = seriously.effect('hex');
+            moblur.source = source
+            target.source = moblur
+            seriously.go()
+ 
+ 
           }
         })
     </script>
   </body>
 </html>
- 
